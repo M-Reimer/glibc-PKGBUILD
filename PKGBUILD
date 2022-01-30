@@ -4,6 +4,17 @@
 # toolchain build order: linux-api-headers->glibc->binutils->gcc->binutils->glibc
 # NOTE: valgrind requires rebuilt with each major glibc version
 
+#
+# https://security.archlinux.org/package/glibc
+#
+# CVE-2021-27645  2021-02-25  OK
+# CVE-2021-33574  2021-05-27  OK
+# CVE-2021-35942  2021-06-25  OK
+# CVE-2021-43396  2021-11-02  OK
+# CVE-2021-3998   2022-01-13  OK
+# CVE-2021-3999   2022-01-21  OK
+#
+
 pkgbase=glibc
 pkgname=(glibc lib32-glibc)
 pkgver=2.33
@@ -24,7 +35,15 @@ source=(https://ftp.gnu.org/gnu/glibc/glibc-$pkgver.tar.xz{,.sig}
         bz27343.patch
         0001-nptl_db-Support-different-libpthread-ld.so-load-orde.patch
         0002-nptl-Check-for-compatible-GDB-in-nptl-tst-pthread-gd.patch
-        0003-nptl-Do-not-build-nptl-tst-pthread-gdb-attach-as-PIE.patch)
+        0003-nptl-Do-not-build-nptl-tst-pthread-gdb-attach-as-PIE.patch
+        CVE-2021-27645.patch
+        CVE-2021-33574_1.patch
+        CVE-2021-33574_2.patch
+        CVE-2021-35942.patch
+        CVE-2021-43396.patch
+        CVE-2021-3998.patch
+        CVE-2021-3999.patch
+       )
 validpgpkeys=(7273542B39962DF7B299931416792B4EA25340F8 # Carlos O'Donell
               BC7C7372637EC10C57D7AA6579C43DFBF1CF2187) # Siddhesh Poyarekar
 md5sums=('390bbd889c7e8e8a7041564cb6b27cca'
@@ -37,7 +56,14 @@ md5sums=('390bbd889c7e8e8a7041564cb6b27cca'
          'cfe57018d06bf748b8ca1779980fef33'
          '78f041fc66fee4ee372f13b00a99ff72'
          '9e418efa189c20053e887398df2253cf'
-         '7a09f1693613897add1791e7aead19c9')
+         '7a09f1693613897add1791e7aead19c9'
+         '86eb9569f8fc87514ae289876f3272f1'
+         '09ab4f43c81684597d505bbc36260573'
+         '9a82016800594f133a01d27e11552329'
+         'ba5b6bdc581b0c6af4961ff52a1be21b'
+         'fe3cd79561ac6c22fa275b4775e99e78'
+         '7aa2d117a6068266f7cbf8aa15dc698c'
+         '9fa976739cbf3fe388b3e999a18c1af2')
 
 prepare() {
   mkdir -p glibc-build lib32-glibc-build
@@ -56,6 +82,15 @@ prepare() {
 
   # nptl: Do not build nptl/tst-pthread-gdb-attach as PIE
   patch -p1 -i "$srcdir"/0003-nptl-Do-not-build-nptl-tst-pthread-gdb-attach-as-PIE.patch
+
+  # Security patches
+  patch -p1 -i "$srcdir"/CVE-2021-27645.patch
+  patch -p1 -i "$srcdir"/CVE-2021-33574_1.patch
+  patch -p1 -i "$srcdir"/CVE-2021-33574_2.patch
+  patch -p1 -i "$srcdir"/CVE-2021-35942.patch
+  patch -p1 -i "$srcdir"/CVE-2021-43396.patch
+  patch -p1 -i "$srcdir"/CVE-2021-3998.patch
+  patch -p1 -i "$srcdir"/CVE-2021-3999.patch
 }
 
 build() {
