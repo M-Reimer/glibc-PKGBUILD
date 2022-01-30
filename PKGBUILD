@@ -85,7 +85,9 @@ build() {
   echo "rootsbindir=/usr/bin" >> configparms
 
   # remove fortify for building libraries
-  CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
+  CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/} # Before and
+  CFLAGS=${CFLAGS/,-D_FORTIFY_SOURCE=2/} # after https://github.com/archlinux/svntogit-packages/commit/a790c38
+  CFLAGS=${CFLAGS/-Wp /} # and after https://github.com/archlinux/svntogit-packages/commit/0a33133
 
   #
   CFLAGS=${CFLAGS/-fno-plt/}
@@ -121,7 +123,10 @@ build() {
   echo "rootsbindir=/usr/bin" >> configparms
 
   # remove fortify for building libraries
-  CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
+  CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/} # Before and
+  CFLAGS=${CFLAGS/,-D_FORTIFY_SOURCE=2/} # after https://github.com/archlinux/svntogit-packages/commit/a790c38
+  CFLAGS=${CFLAGS/-Wp /} # and after https://github.com/archlinux/svntogit-packages/commit/0a33133
+
   CFLAGS=${CFLAGS/-fno-plt/}
   CXXFLAGS=${CXXFLAGS/-fno-plt/}
 
