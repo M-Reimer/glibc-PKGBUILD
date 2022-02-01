@@ -24,7 +24,7 @@ url='https://www.gnu.org/software/libc'
 license=(GPL LGPL)
 makedepends=(git gd lib32-gcc-libs python)
 optdepends=('perl: for mtrace')
-options=(!strip staticlibs)
+options=(!strip staticlibs !lto)
 #_commit=3de512be7ea6053255afed6154db9ee31d4e557a
 #source=(git+https://sourceware.org/git/glibc.git#commit=$_commit
 source=(https://ftp.gnu.org/gnu/glibc/glibc-$pkgver.tar.xz{,.sig}
